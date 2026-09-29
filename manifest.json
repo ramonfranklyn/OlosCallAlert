@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "Olos Call Alert",
+  "version": "1.9",
+  "description": "Alerta para chamadas recebidas no Olos.",
+  "permissions": [
+    "notifications",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://bbts.oloschannel.com.br/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Parar ring",
+    "default_icon": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bbts.oloschannel.com.br/*",
+        "http://localhost/*",
+        "http://127.0.0.1/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "ring.mp3"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  "icons": {
+    "16": "icon.png",
+    "32": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  }
+}
