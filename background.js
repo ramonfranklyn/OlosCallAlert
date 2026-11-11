@@ -41,14 +41,11 @@ function startThemeMonitor() {
 
 chrome.runtime.onInstalled.addListener(startThemeMonitor);
 chrome.runtime.onStartup.addListener(startThemeMonitor);
-startThemeMonitor();
 
 // Recebe mensagens do content script e coordena ações fora da página do Olos.
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "themeChanged" && typeof message.isDark === "boolean") {
-        sendResponse({ received: true });
-
         chrome.action.setIcon({
             path: message.isDark
                 ? "icon_dark_mode_action.png"
@@ -56,14 +53,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         }, () => {
             const error = chrome.runtime.lastError;
             if (error) {
+                const errorMessage = error.message || JSON.stringify(error);
                 console.error(
                     "Não foi possível atualizar o ícone:",
-                    error.message || JSON.stringify(error)
+                    errorMessage
                 );
+                sendResponse({ error: errorMessage });
+                return;
             }
+
+            sendResponse({ success: true });
         });
 
-        return;
+        return true;
     }
 
     // Trata o alerta de uma nova chamada recebida.
@@ -141,3 +143,5 @@ chrome.action.onClicked.addListener((tab) => {
         type: "stopRingtone"
     });
 });
+
+startThemeMonitor();
