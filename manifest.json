@@ -5,7 +5,8 @@
   "description": "Alerta para chamadas recebidas no Olos.",
   "permissions": [
     "notifications",
-    "tabs"
+    "tabs",
+    "offscreen"
   ],
   "host_permissions": [
     "https://bbts.oloschannel.com.br/*",
@@ -17,7 +18,7 @@
   },
   "action": {
     "default_title": "Parar ring",
-    "default_icon": "icon.png"
+    "default_icon": "icon_light_mode.png"
   },
   "content_scripts": [
     {
@@ -43,9 +44,9 @@
     }
   ],
   "icons": {
-    "16": "icon.png",
-    "32": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "icon_light_mode.png",
+    "32": "icon_light_mode.png",
+    "48": "icon_light_mode.png",
+    "128": "icon_light_mode.png"
   }
 }
