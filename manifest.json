@@ -44,9 +44,6 @@
     }
   ],
   "icons": {
-    "16": "icon_light_mode.png",
-    "32": "icon_light_mode.png",
-    "48": "icon_light_mode.png",
-    "128": "icon_light_mode.png"
+    "128": "icon_light_mode_action.png"
   }
 }
