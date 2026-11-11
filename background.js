@@ -1,72 +1,5 @@
-const THEME_MONITOR_DOCUMENT = "theme-monitor.html";
-let creatingThemeMonitor;
-
-async function ensureThemeMonitor() {
-    const documentUrl = chrome.runtime.getURL(THEME_MONITOR_DOCUMENT);
-    let hasThemeMonitor;
-
-    if (chrome.runtime.getContexts) {
-        const contexts = await chrome.runtime.getContexts({
-            contextTypes: ["OFFSCREEN_DOCUMENT"],
-            documentUrls: [documentUrl]
-        });
-        hasThemeMonitor = contexts.length > 0;
-    } else {
-        const clientsList = await clients.matchAll();
-        hasThemeMonitor = clientsList.some(client => client.url === documentUrl);
-    }
-
-    if (hasThemeMonitor) {
-        return;
-    }
-
-    if (!creatingThemeMonitor) {
-        creatingThemeMonitor = chrome.offscreen.createDocument({
-            url: THEME_MONITOR_DOCUMENT,
-            reasons: ["MATCH_MEDIA"],
-            justification: "Detectar mudanças no tema do navegador para atualizar o ícone."
-        }).finally(() => {
-            creatingThemeMonitor = null;
-        });
-    }
-
-    await creatingThemeMonitor;
-}
-
-function startThemeMonitor() {
-    ensureThemeMonitor().catch(error => {
-        console.error("Não foi possível iniciar o monitor de tema:", error);
-    });
-}
-
-chrome.runtime.onInstalled.addListener(startThemeMonitor);
-chrome.runtime.onStartup.addListener(startThemeMonitor);
-
 // Recebe mensagens do content script e coordena ações fora da página do Olos.
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
-    if (message.type === "themeChanged" && typeof message.isDark === "boolean") {
-        chrome.action.setIcon({
-            path: message.isDark
-                ? "icon_dark_mode_action.png"
-                : "icon_light_mode_action.png"
-        }, () => {
-            const error = chrome.runtime.lastError;
-            if (error) {
-                const errorMessage = error.message || JSON.stringify(error);
-                console.error(
-                    "Não foi possível atualizar o ícone:",
-                    errorMessage
-                );
-                sendResponse({ error: errorMessage });
-                return;
-            }
-
-            sendResponse({ success: true });
-        });
-
-        return true;
-    }
 
     // Trata o alerta de uma nova chamada recebida.
     if (message.type === "incomingCall") {
@@ -144,4 +77,3 @@ chrome.action.onClicked.addListener((tab) => {
     });
 });
 
-startThemeMonitor();

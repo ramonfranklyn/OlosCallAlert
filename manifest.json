@@ -1,12 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Olos Call Alert",
-  "version": "2.2",
+  "name": "Call Alert",
+  "version": "2.3",
   "description": "Alerta para chamadas recebidas no Olos.",
   "permissions": [
     "notifications",
-    "tabs",
-    "offscreen"
+    "tabs"
   ],
   "host_permissions": [
     "https://bbts.oloschannel.com.br/*",
@@ -18,7 +17,7 @@
   },
   "action": {
     "default_title": "Parar ring",
-    "default_icon": "icon_light_mode_action.png"
+    "default_icon": "icon.png"
   },
   "content_scripts": [
     {
@@ -44,6 +43,6 @@
     }
   ],
   "icons": {
-    "128": "icon_light_mode_action.png"
+    "128": "icon.png"
   }
 }
