@@ -44,9 +44,11 @@ chrome.runtime.onStartup.addListener(startThemeMonitor);
 startThemeMonitor();
 
 // Recebe mensagens do content script e coordena ações fora da página do Olos.
-chrome.runtime.onMessage.addListener((message, sender) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.type === "themeChanged" && typeof message.isDark === "boolean") {
+        sendResponse({ received: true });
+
         chrome.action.setIcon({
             path: message.isDark
                 ? "icon_dark_mode_action.png"
