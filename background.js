@@ -49,11 +49,15 @@ chrome.runtime.onMessage.addListener((message, sender) => {
     if (message.type === "themeChanged" && typeof message.isDark === "boolean") {
         chrome.action.setIcon({
             path: message.isDark
-                ? "icon_dark_mode.png"
-                : "icon_light_mode.png"
+                ? "icon_dark_mode_action.png"
+                : "icon_light_mode_action.png"
         }, () => {
-            if (chrome.runtime.lastError) {
-                console.error("Não foi possível atualizar o ícone:", chrome.runtime.lastError);
+            const error = chrome.runtime.lastError;
+            if (error) {
+                console.error(
+                    "Não foi possível atualizar o ícone:",
+                    error.message || JSON.stringify(error)
+                );
             }
         });
 

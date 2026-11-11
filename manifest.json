@@ -18,7 +18,7 @@
   },
   "action": {
     "default_title": "Parar ring",
-    "default_icon": "icon_light_mode.png"
+    "default_icon": "icon_light_mode_action.png"
   },
   "content_scripts": [
     {

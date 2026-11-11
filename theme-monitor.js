@@ -5,8 +5,12 @@ function reportColorScheme() {
         type: "themeChanged",
         isDark: colorScheme.matches
     }, () => {
-        if (chrome.runtime.lastError) {
-            console.error("Não foi possível enviar a preferência de tema:", chrome.runtime.lastError);
+        const error = chrome.runtime.lastError;
+        if (error) {
+            console.error(
+                "Não foi possível enviar a preferência de tema:",
+                error.message || JSON.stringify(error)
+            );
         }
     });
 }
